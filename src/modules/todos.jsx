@@ -77,14 +77,14 @@
 // export default todos;
 
 // ------ 아래부터 redux-actions 사용 ------
-import { createAction, handleAction } from 'redux-actions';
+import { createAction, handleActions } from 'redux-actions';
 
 const CHANGE_INPUT = 'todos/CHANGE_INPUT'; // 인풋 값을 변경함
 const INSERT = 'todos/INSERT'; // 새로운 todo 등록
 const TOGGLE = 'todos/TOGGLE'; // todo 체크, 체크 해제
 const REMOVE = 'todos/REMOVE'; // todo 제거
 
-export const changeInpur = createAction(CHANGE_INPUT, input => input);
+export const changeInput = createAction(CHANGE_INPUT, input => input);
 
 let id = 3;
 export const insert = createAction(INSERT, text => ({
@@ -112,7 +112,7 @@ const initialState = {
   ],
 };
 
-const todos = handleAction(
+const todos = handleActions(
   {
     [CHANGE_INPUT]: (state, { payload: input }) => ({ ...state, input }),
     [INSERT]: (state, { payload: todo }) => ({ ...state, todos: state.todos.concat(todo) }),
