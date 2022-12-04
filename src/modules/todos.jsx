@@ -77,7 +77,7 @@
 // export default todos;
 
 // ------ 아래부터 redux-actions 사용 ------
-import { createAction } from 'redux-actions';
+import { createAction, handleAction } from 'redux-actions';
 
 const CHANGE_INPUT = 'todos/CHANGE_INPUT'; // 인풋 값을 변경함
 const INSERT = 'todos/INSERT'; // 새로운 todo 등록
@@ -95,3 +95,39 @@ export const insert = createAction(INSERT, text => ({
 
 export const toggle = createAction(TOGGLE, id => id);
 export const remove = createAction(REMOVE, id => id);
+
+const initialState = {
+  input: '',
+  todos: [
+    {
+      id: 1,
+      text: '리덕스 기초 배우는중!',
+      done: true,
+    },
+    {
+      id: 2,
+      text: '리액트에 리덕스 적용하기!',
+      done: false,
+    },
+  ],
+};
+
+const todos = handleAction(
+  {
+    [CHANGE_INPUT]: (state, action) => ({ ...state, input: action.payload }),
+    [INSERT]: (state, action) => ({ ...state, todos: state.todos.concat(action.payload) }),
+    [TOGGLE]: (state, action) => ({
+      ...state,
+      todos: state.todos.map(todo =>
+        todo.id === action.payload ? { ...todo, done: !todo.done } : todo,
+      ),
+    }),
+    [REMOVE]: (state, action) => ({
+      ...state,
+      todos: state.todos.filter(todo => todo.id !== action.payload),
+    }),
+  },
+  initialState,
+);
+
+export default todos;
